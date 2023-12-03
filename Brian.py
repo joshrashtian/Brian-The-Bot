@@ -1,4 +1,5 @@
 import json
+import re
 from difflib import get_close_matches
 
 def loadBrain(file_path: str) -> dict:
@@ -19,6 +20,11 @@ def getAnswer(question: str, brain: dict) -> str | None:
         if q["question"] == question:
             return q["response"]
         
+def solveProblem(question: str) -> str | None:
+    return str([int(s) for s in question.split() if s.isdigit()])
+    
+
+        
 def Brian():
     brain: dict = loadBrain('brain.json')
 
@@ -27,16 +33,34 @@ def Brian():
 
         if userQuestion.lower() == 'exit':
             break
+        
+        elif userQuestion.lower() == 'math':
+            print("Brian: Riddle Me What?")
 
-        bestResult: str | None = findMatch(userQuestion, [question["question"] for question in brain["questions"]])
+            problem: str = input('You: ')
 
-        if bestResult:
-            answer: str = getAnswer(bestResult, brain)
-            print("Brian: " + str(answer))
+            if problem.lower() == 'stop':
+                break
+            else:
+                bestResult: str | None = solveProblem
+                
+                if bestResult:
+                    print("Brian: " + str(bestResult))
+                
+                else:
+                    print("Brian: Oops! Sadly, I could not figure it out.")
+            
 
         else:
-            print("I can't think of a response to that. Would you like to add a response?")
-            newAnswer: str = input("New Answer: ")
+            bestResult: str | None = findMatch(userQuestion, [question["question"] for question in brain["questions"]])
+
+            if bestResult:
+                answer: str = getAnswer(bestResult, brain)
+                print("Brian: " + str(answer))
+
+            else:
+                print("I can't think of a response to that. Would you like to add a response?")
+                newAnswer: str = input("New Answer: ")
 
             if newAnswer.lower() != 'skip':
                 brain["questions"].append({"question": userQuestion, "response": newAnswer})

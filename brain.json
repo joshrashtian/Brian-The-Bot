@@ -1,12 +1,4 @@
 {
   "questions": [
-    {
-      "question": "hello",
-      "response": "Hello!"
-    },
-    {
-      "question": "Can you tell me the weather outside today?",
-      "response": "No, I cannot sadly :("
-    }
   ]
 }
